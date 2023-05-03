@@ -1,7 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { ApiHelper } from '../apiHelper/ApiHelper';
+
 
 const Home: React.FC = () => {
+
+  const [key, setKey] = useState('');
+
+  const navigate = useHistory();
+
+  const apiHelper = new ApiHelper();
+
+  const apiKeyAsync = async (key: string) => {
+    const apiKey = await apiHelper.getApiKeyAsync();
+    localStorage.setItem('Api-key', apiKey)
+    return apiKey;
+  }
+
+  const companyApiAsync = async (key: string) => {
+    const apiKey = localStorage.getItem('Api-key')!;
+    console.log('This is the key: ' + apiKey);
+    const companies = await apiHelper.getCompaniesAsync(apiKey);
+    console.log('This is the company: ' + companies);
+    localStorage.setItem('Companies', JSON.stringify(companies));
+  }
+
+  useEffect(() => {
+    apiKeyAsync(key);
+  }, [])
+
   return (
     <Container>
       <Row>
@@ -21,9 +49,10 @@ const Home: React.FC = () => {
 
           <hr />
           <br />
-          <p>Click to see companies</p>
+          <p>Click to see companies {key}</p>
 
-          <Button>View Companies</Button>
+          <Button onClick={() => navigate.push('Companies')}> View Companies </Button>{ }
+          <Button onClick={() => companyApiAsync(key)}> Get Companies </Button>
         </Col>
       </Row>
     </Container>
