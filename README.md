@@ -50,16 +50,13 @@ Please follow the steps below,
 # This application does the following:
 
 - `Performs an API call to get a key.`
-- Use key to fetch company data & displays the companies and their employees.
-- Creates company card with the ability to add 1-n employees.
-- POST this new company to the API, along with several employees.
-- Creates unit tests using jest
-- Migrates the data and API logic into Redux.
+- `Use key to fetch company data & displays the companies and their employees.`
+- `Creates company card with the ability to add 1-n employees.`
+- `POST this new company to the API, along with several employees.`
+- `Creates unit tests using jest`
+- `Migrates the data and API logic into Redux.`
 
-# git commit -m "first commit"
-
-# git branch -M main
-
-# git remote add origin https://github.com/Cameku/Company-App.git
-
-# git push -u origin main
+- git commit -m "first commit"
+- git branch -M main
+- git remote add origin https://github.com/Cameku/Company-App.git
+- git push -u origin main
