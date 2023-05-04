@@ -11,7 +11,15 @@ export class ApiHelper {
     return compResponse;
   };
 
-  /*   async getCompaniesAsync(key: string) {
+  /* 
+  //// Normal function
+  
+    async getApiKeyAsync(): Promise<string> {
+    const response = await fetch('https://tqinterviewapi.azurewebsites.net/api/Companies/key');
+     return  await response.json();
+  }
+
+    async getCompaniesAsync(key: string) {
     let url = 'https://tqinterviewapi.azurewebsites.net/api/Companies?key=' + key;
     console.log(' First response ' + url);
     const response = await fetch(url);
@@ -20,11 +28,5 @@ export class ApiHelper {
     //console.log('JSON response' + compResponse);
     return compResponse;
   }
- */
-
-  /*   async getApiKeyAsync(): Promise<string> {
-    const response = await fetch('https://tqinterviewapi.azurewebsites.net/api/Companies/key');
-    var x = await response.json();
-    return x;
-  } */
+  */
 }

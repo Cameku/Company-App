@@ -51,8 +51,8 @@ const Home: React.FC = () => {
           <br />
           <p>Click to see companies {key}</p>
 
-          <Button onClick={() => navigate.push('Companies')}> View Companies </Button>{ }
-          <Button onClick={() => companyApiAsync(key)}> Get Companies </Button>
+          <Button onClick={() => navigate.push('Companies')}> View Companies </Button>
+          { } <Button onClick={() => companyApiAsync(key)}> Get Companies </Button>
         </Col>
       </Row>
     </Container>
