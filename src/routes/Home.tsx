@@ -7,6 +7,7 @@ import { ApiHelper } from '../apiHelper/ApiHelper';
 const Home: React.FC = () => {
 
   const [key, setKey] = useState('');
+  // const [error, setError] = useState(null)
 
   const navigate = useHistory();
 
@@ -20,10 +21,8 @@ const Home: React.FC = () => {
 
   const companyApiAsync = async (key: string) => {
     const apiKey = localStorage.getItem('Api-key')!;
-    console.log('This is the key: ' + apiKey);
     const companies = await apiHelper.getCompaniesAsync(apiKey);
-    console.log('This is the company: ' + companies);
-    localStorage.setItem('Companies', JSON.stringify(companies));
+    localStorage.setItem('Companies', JSON.stringify(companies))
   }
 
   useEffect(() => {
@@ -51,8 +50,8 @@ const Home: React.FC = () => {
           <br />
           <p>Click to see companies {key}</p>
 
+          <Button onClick={() => companyApiAsync(key)}>Store Companies Locally </Button> { }
           <Button onClick={() => navigate.push('Companies')}> View Companies </Button>
-          { } <Button onClick={() => companyApiAsync(key)}> Get Companies </Button>
         </Col>
       </Row>
     </Container>
