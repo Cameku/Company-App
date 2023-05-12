@@ -1,19 +1,27 @@
 export class ApiHelper {
   getApiKeyAsync = async (): Promise<string> => {
     const response = await fetch('https://tqinterviewapi.azurewebsites.net/api/Companies/key');
+
+    if (!response.ok) {
+      const message = 'Could not fetch the data, please try again...';
+      throw new Error(message);
+    }
     return await response.json();
   };
 
   getCompaniesAsync = async (key: string) => {
     const url = 'https://tqinterviewapi.azurewebsites.net/api/Companies?key=' + key;
     const response = await fetch(url);
-    const compResponse = await response.json();
-    return compResponse;
+    if (!response.ok) {
+      const message = 'Could not fetch company data, please try again';
+      throw new Error(message);
+    }
+    return await response.json();
   };
 
   /* 
   //// Normal function
-  
+
     async getApiKeyAsync(): Promise<string> {
     const response = await fetch('https://tqinterviewapi.azurewebsites.net/api/Companies/key');
      return  await response.json();
