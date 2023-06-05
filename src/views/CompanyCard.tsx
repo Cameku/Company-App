@@ -3,10 +3,6 @@ import { Card, Col, Container, Row } from 'react-bootstrap'
 import { CompanyType } from '../types'
 import EmployeesModal from './EmployeesModal';
 
-//const CompanyCard = (companyInfo: { name: string, address: string, url: string, employees: [{ name: string, age: number }] }) => {
-
-//function CompanyCard : React.FC (companyInfo: {name: string, address: string, url: string, employees: [{name: string, age: number}]}) {
-
 const CompanyCard = (companyInfo: CompanyType) => {
 
     return (

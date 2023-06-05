@@ -50,7 +50,7 @@ const Home: React.FC = () => {
           <br />
           <p>Click to see companies {key}</p>
 
-          <Button onClick={() => companyApiAsync(key)}>Store Companies Locally </Button> { }
+          <Button onClick={() => companyApiAsync(key)}>Click to Store Companies</Button> { }
           <Button onClick={() => navigate.push('Companies')}> View Companies </Button>
         </Col>
       </Row>
