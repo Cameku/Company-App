@@ -4,15 +4,15 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import CompanyCard from '../views/CompanyCard';
 import { CompanyType } from '../types';
 import NotFound from './NotFound';
+import { Constants } from '../apiHelper/Constants';
 
 const Companies = () => {
     const [companyDetails, setCompanyDetails] = useState<CompanyType[]>([])
 
     const displayCompanies = () => {
-        const companies = localStorage.getItem('Companies');
+        const companies = localStorage.getItem(Constants.CompaniesKey);
         if (companies !== null) {
             const companyDetails = JSON.parse(companies);
-            console.log('This company details ' + companyDetails)
             setCompanyDetails(companyDetails);
         }
     }

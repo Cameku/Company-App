@@ -1,3 +1,5 @@
+import { CompanyType } from '../types';
+
 export class ApiHelper {
   getApiKeyAsync = async (): Promise<string> => {
     const response = await fetch('https://tqinterviewapi.azurewebsites.net/api/Companies/key');
@@ -17,6 +19,22 @@ export class ApiHelper {
       throw new Error(message);
     }
     return await response.json();
+  };
+
+  postNewCompanyAsync = async (key: string, company: CompanyType) => {
+    const url = 'https://tqinterviewapi.azurewebsites.net/api/Companies?key=' + key;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(company),
+    });
+    // const data = await response.json();
+
+    if (response.status === 200) {
+      return true;
+    }
+    return false;
   };
 
   /* 

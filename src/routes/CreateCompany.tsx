@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { Employee } from '../types';
+import { CompanyType, Employee } from '../types';
+import { ApiHelper } from '../apiHelper/ApiHelper';
+import { useHistory } from 'react-router-dom';
+import { Constants } from '../apiHelper/Constants';
 
 
 const CreateCompany = () => {
@@ -9,7 +12,9 @@ const CreateCompany = () => {
     const [indexBeingEdited, setIndexBeingEdited] = useState(-1);
     const [employeeName, setEmployeeName] = useState('');
     const [employeeAge, setEmployeeAge] = useState(Number);
-
+    const [name, setName] = useState('');
+    const [address, setaddress] = useState('');
+    const [url, setUrl] = useState('');
 
     const addEmployee = () => {
         if (employeeName.trim().length !== 0 && employeeAge > 0) {
@@ -39,10 +44,28 @@ const CreateCompany = () => {
 
     const updateEmployee = (name: string, age: number) => {
         setEmployeeList(employeeList => [...employeeList, { name: employeeName, age: employeeAge }])
-        //setEmployeeName(name);
-        //setEmployeeAge(age);
     }
 
+    const apiHelper = new ApiHelper();
+    const history = useHistory();
+
+    const addToCompaniesAsync = async (e: { preventDefault: () => void }) => {
+        e.preventDefault();
+        //1. get new company details from input
+        const newCompany: CompanyType = { name, address, url, employees: employeeList }
+        //2. send to api
+        const apikey = localStorage.getItem('Api-key')!
+        let isPosted = await apiHelper.postNewCompanyAsync(apikey, newCompany)
+
+        if (isPosted) {
+            const companies = JSON.parse(localStorage.getItem(Constants.CompaniesKey)!);
+            companies.push(newCompany);
+            localStorage.setItem(Constants.CompaniesKey, JSON.stringify(companies));
+            history.push('/companies');
+        } else {
+            console.log('There was an error, try again')
+        }
+    }
 
     return (
         <div>
@@ -53,11 +76,22 @@ const CreateCompany = () => {
                         <Form>
                             <Form.Group className="mb-3" controlId="formCompany">
                                 <Form.Label>Name</Form.Label>
-                                <Form.Control type="text" placeholder="Enter Company Name" />
+                                <Form.Control
+                                    type="text"
+                                    value={name}
+                                    placeholder="Enter Company Name"
+                                    onChange={(e) => setName(e.target.value)} />
                                 <Form.Label>Address</Form.Label>
-                                <Form.Control as="textarea" rows={3} placeholder="Enter Address" />
+                                <Form.Control as="textarea" rows={3}
+                                    value={address}
+                                    placeholder="Enter Address"
+                                    onChange={(e) => setaddress(e.target.value)} />
                                 <Form.Label>Website</Form.Label>
-                                <Form.Control type="text" placeholder="Website" />
+                                <Form.Control
+                                    type="text"
+                                    value={url}
+                                    placeholder="Website"
+                                    onChange={(e) => setUrl(e.target.value)} />
                             </Form.Group>
                             {/* <hr style={{ height: 1, backgroundColor: 'black' }} /> */}
                             <Form.Group className="mb-3" controlId="formEmployee">
@@ -77,8 +111,8 @@ const CreateCompany = () => {
                             </Form.Group>
 
                             <Button variant="primary" onClick={addEmployee} > Add Employee </Button> { }
-                            <Button variant="success" type="submit"> Add To Company </Button> { }
-                            <Button variant='warning'>Back Home</Button>
+                            <Button variant="success" onClick={addToCompaniesAsync} > Send Company to Api </Button> { }
+                            <Button variant='warning' onClick={() => history.push('/')} >Back Home</Button>
                         </Form>
                     </Col>
                     <Col>
