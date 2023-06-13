@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { ApiHelper } from '../apiHelper/ApiHelper';
+import { Constants } from '../apiHelper/Constants';
 
 
 const Home: React.FC = () => {
@@ -20,9 +21,9 @@ const Home: React.FC = () => {
   }
 
   const companyApiAsync = async (key: string) => {
-    const apiKey = localStorage.getItem('Api-key')!;
+    const apiKey = localStorage.getItem(Constants.ApiKey)!;
     const companies = await apiHelper.getCompaniesAsync(apiKey);
-    localStorage.setItem('Companies', JSON.stringify(companies))
+    localStorage.setItem(Constants.CompaniesKey, JSON.stringify(companies))
   }
 
   useEffect(() => {
