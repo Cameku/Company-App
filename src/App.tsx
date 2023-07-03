@@ -3,6 +3,8 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
+import { ToastContainer } from 'react-toastify';
+
 import Layout from './views/Layout';
 import configureStore from './store/store';
 
@@ -16,6 +18,7 @@ const App: React.FC = () => {
     <ReduxProvider store={store}>
       <Router history={history}>
         <Layout />
+        <ToastContainer />
       </Router>
     </ReduxProvider>
   );

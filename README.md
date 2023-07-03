@@ -1,6 +1,6 @@
 # Dela React Application
 
-Please follow the steps below,
+Project Name: Company Digitisation and Transformation
 
 # Instructions
 

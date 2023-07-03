@@ -3,12 +3,13 @@ import { useHistory } from "react-router-dom";
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { ApiHelper } from '../apiHelper/ApiHelper';
 import { Constants } from '../apiHelper/Constants';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Home: React.FC = () => {
 
   const [key, setKey] = useState('');
-  // const [error, setError] = useState(null)
 
   const navigate = useHistory();
 
@@ -22,12 +23,22 @@ const Home: React.FC = () => {
 
   const companyApiAsync = async (key: string) => {
     const apiKey = localStorage.getItem(Constants.ApiKey)!;
-    const companies = await apiHelper.getCompaniesAsync(apiKey);
-    localStorage.setItem(Constants.CompaniesKey, JSON.stringify(companies))
+    try {
+      const companies = await apiHelper.getCompaniesAsync(apiKey);
+      localStorage.setItem(Constants.CompaniesKey, JSON.stringify(companies))
+
+    } catch (error) {
+      let exception = (error as Error);
+      toast(exception.message, { autoClose: false })
+    }
   }
 
   useEffect(() => {
-    apiKeyAsync(key);
+    const getKey = async () => {
+      await apiKeyAsync(key);
+      companyApiAsync(key);
+    }
+    getKey();
   }, [])
 
   return (
@@ -51,7 +62,7 @@ const Home: React.FC = () => {
           <br />
           <p>Click to see companies {key}</p>
 
-          <Button onClick={() => companyApiAsync(key)}>Click to Store Companies</Button> { }
+          {/* <Button onClick={() => companyApiAsync(key)}>Click to Store Companies</Button> { } */}
           <Button onClick={() => navigate.push('Companies')}> View Companies </Button>
         </Col>
       </Row>
