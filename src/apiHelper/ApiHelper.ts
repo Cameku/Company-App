@@ -1,4 +1,6 @@
 import { CompanyType } from '../types';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class ApiHelper {
   getApiKeyAsync = async (): Promise<string> => {

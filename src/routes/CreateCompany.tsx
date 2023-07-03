@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { CompanyType, Employee } from '../types';
 import { ApiHelper } from '../apiHelper/ApiHelper';
 import { useHistory } from 'react-router-dom';
 import { Constants } from '../apiHelper/Constants';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const CreateCompany = () => {
@@ -15,6 +17,8 @@ const CreateCompany = () => {
     const [name, setName] = useState('');
     const [address, setaddress] = useState('');
     const [url, setUrl] = useState('');
+    const [validated, setValidated] = useState(false);
+
 
     const addEmployee = () => {
         if (employeeName.trim().length !== 0 && employeeAge > 0) {
@@ -22,7 +26,7 @@ const CreateCompany = () => {
             setEmployeeName('');
             setEmployeeAge(0)
         } else {
-            prompt('Input value cannot be empty')
+            setValidated(true);
         }
 
     }
@@ -57,13 +61,14 @@ const CreateCompany = () => {
         const apikey = localStorage.getItem('Api-key')!
         let isPosted = await apiHelper.postNewCompanyAsync(apikey, newCompany)
 
-        if (isPosted) {
+        if (isPosted && !validated) {
             const companies = JSON.parse(localStorage.getItem(Constants.CompaniesKey)!);
             companies.push(newCompany);
             localStorage.setItem(Constants.CompaniesKey, JSON.stringify(companies));
-            history.push('/companies');
+            //history.push('/companies');
+            history.push('Companies');
         } else {
-            console.log('There was an error, try again')
+            toast('There was an error, please try again');
         }
     }
 
@@ -80,34 +85,50 @@ const CreateCompany = () => {
                                     type="text"
                                     value={name}
                                     placeholder="Enter Company Name"
+                                    required
+                                    // pattern='(/^[A-Za-z]+$/)'
                                     onChange={(e) => setName(e.target.value)} />
+                                <Form.Control.Feedback type="invalid">
+                                    Please Enter Company Name
+                                </Form.Control.Feedback>
                                 <Form.Label>Address</Form.Label>
                                 <Form.Control as="textarea" rows={3}
                                     value={address}
                                     placeholder="Enter Address"
+                                    required
                                     onChange={(e) => setaddress(e.target.value)} />
                                 <Form.Label>Website</Form.Label>
                                 <Form.Control
-                                    type="text"
+                                    type="website address"
                                     value={url}
                                     placeholder="Website"
+
                                     onChange={(e) => setUrl(e.target.value)} />
                             </Form.Group>
-                            {/* <hr style={{ height: 1, backgroundColor: 'black' }} /> */}
+                            <hr style={{ height: 1, backgroundColor: 'black' }} />
+
                             <Form.Group className="mb-3" controlId="formEmployee">
                                 <Form.Label>Name </Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Employee Name"
                                     value={employeeName}
+                                    required
                                     onChange={(e) => setEmployeeName(e.target.value)} />
+                                <Form.Control.Feedback type="invalid">
+                                    Please Enter Your Name
+                                </Form.Control.Feedback>
                                 <Form.Label>Age </Form.Label>
                                 <Form.Control
                                     type='number'
-                                    pattern='[0-9]*'
+                                    pattern='( ^[0-9]*$)'
                                     placeholder="Employee Age"
+                                    required
                                     value={employeeAge}
                                     onChange={(e) => setEmployeeAge(Number(e.target.value))} />
+                                <Form.Control.Feedback type="invalid">
+                                    Please Enter Your Age
+                                </Form.Control.Feedback>
                             </Form.Group>
 
                             <Button variant="primary" onClick={addEmployee} > Add Employee </Button> { }
@@ -165,6 +186,7 @@ const CreateCompany = () => {
                             )
                         }
                     </Col>
+
                 </Row>
 
             </Container>
